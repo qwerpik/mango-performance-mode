@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/logo.svg" alt="mango-performance-mode logo" width="128" />
+
 # Mango Performance Mode
 
 **Eco / Balanced / Max for Ryzen + Radeon on MangoWM — right in your Waybar.**

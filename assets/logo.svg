@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="mango-performance-mode logo">
+  <defs>
+    <linearGradient id="ringFade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ebdbb2" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#ebdbb2" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- backdrop: dark rounded square in Mango rice tones -->
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="#1b1a1a"/>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="none" stroke="#ebdbb2" stroke-opacity="0.22" stroke-width="4"/>
+
+  <!-- mode ring: three 100-degree arcs (Eco / Balanced / Max) -->
+  <g fill="none" stroke-width="15" stroke-linecap="round">
+    <circle cx="128" cy="136" r="70" stroke="#b8bb26"
+      stroke-dasharray="122.7 317.2" stroke-dashoffset="0"
+      transform="rotate(155 128 136)"/>
+    <circle cx="128" cy="136" r="70" stroke="#d3869b"
+      stroke-dasharray="122.7 317.2" stroke-dashoffset="0"
+      transform="rotate(275 128 136)"/>
+    <circle cx="128" cy="136" r="70" stroke="#fe8019"
+      stroke-dasharray="122.7 317.2" stroke-dashoffset="0"
+      transform="rotate(35 128 136)"/>
+  </g>
+
+  <!-- soft inner sheen -->
+  <circle cx="128" cy="136" r="70" fill="none" stroke="url(#ringFade)" stroke-width="15" stroke-linecap="round"
+    stroke-dasharray="122.7 317.2" transform="rotate(35 128 136)" opacity="0.35"/>
+
+  <!-- power stem -->
+  <line x1="128" y1="88" x2="128" y2="140" stroke="#ebdbb2" stroke-width="17" stroke-linecap="round"/>
+  <circle cx="128" cy="88" r="8.5" fill="#ebdbb2"/>
+
+  <!-- speed ticks: three small bars under the ring -->
+  <g stroke-linecap="round" stroke-width="9">
+    <line x1="96" y1="216" x2="112" y2="216" stroke="#b8bb26"/>
+    <line x1="120" y1="216" x2="136" y2="216" stroke="#d3869b"/>
+    <line x1="144" y1="216" x2="160" y2="216" stroke="#fe8019"/>
+  </g>
+</svg>
