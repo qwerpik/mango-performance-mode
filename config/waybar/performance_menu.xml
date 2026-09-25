@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child>
+      <object class="GtkMenuItem" id="eco">
+        <property name="label">  Eco</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="balanced">
+        <property name="label">  Balanced</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="max">
+        <property name="label">  Max Performance</property>
+      </object>
+    </child>
+  </object>
+</interface>

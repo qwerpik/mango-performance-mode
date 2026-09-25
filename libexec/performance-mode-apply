@@ -1,0 +1,99 @@
+#!/usr/bin/python3
+"""Privileged, fixed-purpose Ryzen/Radeon power mode writer."""
+
+import os
+from pathlib import Path
+import sys
+
+
+PREFERRED_GPU_DEVICE = os.environ.get("MANGO_GPU_DEVICE", "0x7480")
+AMD_VENDOR = "0x1002"
+
+MODES = {
+    "eco": ("powersave", "balance_power", "auto"),
+    "balanced": ("powersave", "balance_performance", "auto"),
+    "max": ("performance", "performance", "high"),
+}
+
+
+def read(path):
+    return path.read_text().strip()
+
+
+def write(path, value):
+    path.write_text(value + "\n")
+
+
+def gpu_path():
+    candidates = []
+    for card in Path("/sys/class/drm").iterdir():
+        if not card.name.startswith("card") or not card.name[4:].isdigit():
+            continue
+        device = card / "device"
+        if not (device / "vendor").exists() or not (device / "device").exists():
+            continue
+        if read(device / "vendor") != AMD_VENDOR:
+            continue
+        level = device / "power_dpm_force_performance_level"
+        if not level.exists():
+            continue
+        candidates.append((read(device / "device"), level))
+    if not candidates:
+        raise RuntimeError("No AMD GPU with power_dpm_force_performance_level found")
+    for dev_id, level in candidates:
+        if dev_id == PREFERRED_GPU_DEVICE:
+            return level
+    # Fall back to the first AMD GPU instead of failing on other Radeons.
+    return candidates[0][1]
+
+
+def apply(mode):
+    if mode not in MODES:
+        raise ValueError("Only eco, balanced, and max are allowed")
+    policies = sorted(Path("/sys/devices/system/cpu/cpufreq").glob("policy*"))
+    if not policies:
+        raise RuntimeError("No CPU frequency policies found")
+    gpu = gpu_path()
+    previous = [(p, read(p / "scaling_governor"), read(p / "energy_performance_preference"),
+                 read(p / "boost")) for p in policies]
+    previous_gpu = read(gpu)
+    governor, epp, gpu_level = MODES[mode]
+    try:
+        for p in policies:
+            write(p / "scaling_governor", governor)
+        for p in policies:
+            write(p / "energy_performance_preference", epp)
+            write(p / "boost", "1")
+        write(gpu, gpu_level)
+        if any(read(p / "scaling_governor") != governor or
+               read(p / "energy_performance_preference") != epp or
+               read(p / "boost") != "1" for p in policies) or read(gpu) != gpu_level:
+            raise RuntimeError("Kernel settings did not match the selected mode")
+    except Exception:
+        for p, old_governor, _, _ in previous:
+            try:
+                write(p / "scaling_governor", old_governor)
+            except OSError:
+                pass
+        for p, _, old_epp, old_boost in previous:
+            try:
+                write(p / "energy_performance_preference", old_epp)
+                write(p / "boost", old_boost)
+            except OSError:
+                pass
+        try:
+            write(gpu, previous_gpu)
+        except OSError:
+            pass
+        raise
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2 or sys.argv[1] not in MODES:
+        print("Usage: performance-mode-apply {eco|balanced|max}", file=sys.stderr)
+        sys.exit(2)
+    try:
+        apply(sys.argv[1])
+    except (OSError, RuntimeError, ValueError) as exc:
+        print(f"Could not apply {sys.argv[1]}: {exc}", file=sys.stderr)
+        sys.exit(1)

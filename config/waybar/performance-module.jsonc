@@ -1,0 +1,25 @@
+// Drop-in Waybar module for mango-performance-mode.
+// Copy this block into your Waybar config's "modules-right" and module section.
+// Requires: mango-performance-mode installed in PATH, sudoers rule installed.
+{
+  "modules-right-append": [
+    "custom/performance-mode"
+  ],
+  "custom/performance-mode": {
+    "format": "{}",
+    "return-type": "json",
+    // Use the installed CLI on PATH so home directories stay portable.
+    "exec": "mango-performance-mode status",
+    "interval": 2,
+    "menu": "on-click",
+    // Installed by install.sh to ~/.config/mango/waybar/performance_menu.xml
+    "menu-file": "~/.config/mango/waybar/performance_menu.xml",
+    "menu-actions": {
+      "eco": "mango-performance-mode set eco",
+      "balanced": "mango-performance-mode set balanced",
+      "max": "mango-performance-mode set max"
+    },
+    // Right-click opens the power menu (requires wlogout, see config/wlogout/).
+    "on-click-right": "wlogout -C ~/.config/mango/wlogout/style.css -l ~/.config/mango/wlogout/layout -b 5 --protocol layer-shell"
+  }
+}

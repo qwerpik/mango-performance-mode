@@ -1,0 +1,1 @@
+"""mango-performance-mode package."""

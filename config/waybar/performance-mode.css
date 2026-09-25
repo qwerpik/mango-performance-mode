@@ -1,0 +1,21 @@
+/* Minimal #custom-performance-mode excerpt.
+ * Merge into your Waybar style.css. Full rice lives outside this repo. */
+#custom-performance-mode {
+    background: #b8bb26;
+    color: #1b1a1a;
+}
+
+#custom-performance-mode.balanced {
+    background: #d3869b;
+    color: #1b1a1a;
+}
+
+#custom-performance-mode.max {
+    background: #fe8019;
+    color: #1b1a1a;
+}
+
+#custom-performance-mode.error {
+    background: #fb4934;
+    color: #1b1a1a;
+}

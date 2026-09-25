@@ -1,0 +1,1 @@
+%INSTALL_USER% ALL=(root) NOPASSWD: /usr/local/libexec/performance-mode-apply eco, /usr/local/libexec/performance-mode-apply balanced, /usr/local/libexec/performance-mode-apply max
