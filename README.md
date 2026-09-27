@@ -34,6 +34,12 @@ Zero-dependency Waybar power controller • 3 locked-down modes • Sober auto-s
 
 <br />
 
+<p align="center">
+  <img src="assets/waybar-eco.png" alt="Live Waybar capture showing Mango Performance Mode in Eco" width="520" />
+</p>
+
+<p align="center"><sub>Live capture from the reference MangoWM setup.</sub></p>
+
 > [!TIP]
 > **Try in 60 seconds**
 > ```bash
