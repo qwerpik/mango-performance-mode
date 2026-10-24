@@ -1,1 +1,4 @@
+# sudo resets the environment; keep the GPU override so the helper and the
+# controller agree on which card to drive (see MANGO_GPU_DEVICE in README).
+Defaults!/usr/local/libexec/performance-mode-apply env_keep += "MANGO_GPU_DEVICE"
 %INSTALL_USER% ALL=(root) NOPASSWD: /usr/local/libexec/performance-mode-apply eco, /usr/local/libexec/performance-mode-apply balanced, /usr/local/libexec/performance-mode-apply max

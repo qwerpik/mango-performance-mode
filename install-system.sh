@@ -25,10 +25,18 @@ install -d -o root -g root -m 0755 /usr/local/libexec
 install -o root -g root -m 0755 "$REPO_DIR/libexec/performance-mode-apply" /usr/local/libexec/performance-mode-apply
 
 # Render sudoers template with the real username (no hardcoded 'user').
+# Only a validated file may reach /etc/sudoers.d: a broken one there makes
+# sudo refuse to run at all, which would lock the user out of fixing it.
+if ! [[ $TARGET_USER =~ ^[a-z_][a-z0-9_-]*$ ]] || ! id -u "$TARGET_USER" >/dev/null 2>&1; then
+  echo "Not a valid local user: '$TARGET_USER'" >&2
+  exit 1
+fi
+SUDOERS_TMP="$(mktemp)"
+trap 'rm -f "$SUDOERS_TMP"' EXIT
 sed "s/%INSTALL_USER%/$TARGET_USER/" "$REPO_DIR/libexec/mango-performance-mode.sudoers.template" \
-  > /etc/sudoers.d/mango-performance-mode
-chmod 0440 /etc/sudoers.d/mango-performance-mode
-visudo -cf /etc/sudoers.d/mango-performance-mode
+  > "$SUDOERS_TMP"
+visudo -cf "$SUDOERS_TMP" >/dev/null
+install -o root -g root -m 0440 "$SUDOERS_TMP" /etc/sudoers.d/mango-performance-mode
 
 # wlogout dependency (distro-aware; original was pacman-only).
 if ! command -v wlogout >/dev/null 2>&1; then

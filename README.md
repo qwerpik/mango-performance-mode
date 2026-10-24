@@ -16,7 +16,7 @@
 &nbsp;
 [![Release](https://img.shields.io/github/v/release/qwerpik/mango-performance-mode?style=for-the-badge&logo=github&color=89b4fa)](https://github.com/qwerpik/mango-performance-mode/releases)
 &nbsp;
-[![Python 3.9+](https://img.shields.io/badge/Python-3.9+-89b4fa?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-89b4fa?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 &nbsp;
 [![Dependencies: 0](https://img.shields.io/badge/Dependencies-0-a6e3a1?style=for-the-badge)](pyproject.toml)
 &nbsp;
